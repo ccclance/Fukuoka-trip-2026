@@ -1,546 +1,675 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#eee5d8" />
-  <meta name="description" content="福岡 6 天 5 夜自由行｜別府・由布院・福岡" />
-  <title>福岡 6 天 5 夜｜Trip Book</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F2ECDD">
+<title>福岡．別府 行程手帖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F2ECDD;
+    --bg-deep:#E9DEC6;
+    --card:#FBF8F1;
+    --card-alt:#EFE3C9;
+    --tea:#9C7A54;
+    --tea-deep:#5F4632;
+    --ink:#3B2F24;
+    --muted:#8C7F6C;
+    --line:#DCCFB0;
+    --clay:#B5673A;
+    --clay-soft:#F3DFC8;
+    --radius:18px;
+    --max:520px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html, body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC','Hiragino Sans',sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column;
+    height:100vh; height:100dvh;
+    overflow:hidden;
+  }
+  .page-container{flex:1 1 auto; min-height:0; position:relative;}
+  .page{position:absolute; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch; display:none;}
+  .page.active{display:block;}
+  ::selection{background:var(--clay-soft); color:var(--tea-deep);}
+  h1,h2,h3{font-family:'Noto Serif TC',serif; color:var(--tea-deep); margin:0;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 20px;}
 
-  <style>
-    :root{
-      --bg:#f5f0e8;
-      --paper:#fffdf8;
-      --paper-2:#eee5d8;
-      --ink:#3d3933;
-      --sub:#777067;
-      --line:#ddd3c5;
-      --accent:#9b856d;
-      --accent-dark:#6f604f;
-      --green:#788171;
-      --shadow:0 10px 35px rgba(72,59,44,.08);
-      --radius:22px;
-    }
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(circle at 88% -12%, #ffffffaa 0%, transparent 55%),
+      linear-gradient(180deg, var(--bg-deep), var(--bg) 78%);
+    padding:38px 20px 26px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-top{max-width:var(--max); margin:0 auto; display:flex; justify-content:space-between; align-items:flex-start; gap:14px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em;
+    color:var(--tea); margin:0 0 10px; text-transform:uppercase;
+  }
+  .hero h1{font-size:28px; font-weight:700; line-height:1.38;}
+  .hero-dates{color:var(--muted); font-size:12.5px; margin:10px 0 0;}
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",
-      "Helvetica Neue",Arial,sans-serif;
-      background:var(--bg);
-      color:var(--ink);
-      line-height:1.7;
-      -webkit-font-smoothing:antialiased;
-    }
+  .depart-badge{
+    flex:none; text-align:center;
+    background:var(--card); border:1px solid var(--line);
+    border-radius:16px; padding:12px 14px;
+    box-shadow:0 4px 14px rgba(95,70,50,.08);
+    min-width:84px;
+  }
+  .depart-badge .big{
+    display:block; font-family:'Noto Serif TC',serif; font-weight:700;
+    font-size:15px; color:var(--clay); line-height:1.3; white-space:nowrap;
+  }
+  .depart-badge .small{
+    display:block; font-family:'JetBrains Mono',monospace; font-size:9.5px;
+    color:var(--muted); letter-spacing:.06em; margin-top:4px;
+  }
 
-    button,input{font:inherit}
-    button{cursor:pointer}
+  /* ---------- SECTION TITLES ---------- */
+  .section-title{
+    display:flex; align-items:center; gap:9px;
+    margin:32px 0 14px;
+  }
+  .section-title .ic{width:17px; height:17px; stroke:var(--tea); fill:none; stroke-width:1.6; flex:none;}
+  .section-title h2{font-size:15.5px; letter-spacing:.02em; flex:none;}
+  .section-title::after{content:""; flex:1; height:1px; background:var(--line);}
+  .section-title .pill-btn{
+    flex:none; font-family:'Noto Sans TC',sans-serif; font-size:11.5px; font-weight:700;
+    color:var(--clay); background:var(--clay-soft); border:1px solid transparent;
+    padding:6px 12px; border-radius:999px; cursor:pointer;
+  }
+  .section-title .pill-btn.active{background:var(--clay); color:#fff;}
 
-    .wrap{
-      width:min(760px,100%);
-      margin:auto;
-      padding:18px 16px 96px;
-    }
+  /* ---------- CLIMATE CARDS ---------- */
+  .climate-row{display:flex; gap:12px;}
+  .climate-card{
+    flex:1; background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); padding:16px 16px 15px;
+  }
+  .climate-card .city-en{font-family:'JetBrains Mono',monospace; font-size:9.5px; color:var(--muted); letter-spacing:.08em;}
+  .climate-card .city-head{display:flex; justify-content:space-between; align-items:flex-start;}
+  .climate-card .city-name{font-family:'Noto Serif TC',serif; font-weight:700; font-size:15px; color:var(--tea-deep);}
+  .climate-card svg.wicon{width:26px; height:26px; stroke:var(--clay); fill:none; stroke-width:1.4;}
+  .climate-card .temp{font-family:'Noto Serif TC',serif; font-size:34px; font-weight:700; color:var(--ink); margin:8px 0 2px;}
+  .climate-card .cond{font-size:12px; color:var(--muted); margin-bottom:10px;}
+  .climate-card .meta{display:flex; gap:12px; font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace;}
+  .climate-note{font-size:11.5px; color:var(--muted); margin-top:10px; line-height:1.6;}
 
-    .hero{
-      padding:42px 8px 24px;
-    }
+  /* ---------- FX CARD ---------- */
+  .fx-card{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); padding:20px 20px 18px;
+  }
+  .fx-row{display:flex; align-items:center; gap:10px;}
+  .fx-label{width:46px; flex:none; font-size:13px; color:var(--muted); font-weight:700;}
+  .fx-box{
+    flex:1; background:var(--bg); border:1px solid var(--line); border-radius:12px;
+    padding:12px 14px; display:flex; align-items:center; gap:8px;
+  }
+  .fx-box input{
+    flex:1; border:none; background:transparent; outline:none;
+    font-family:'JetBrains Mono',monospace; font-size:19px; color:var(--ink); width:100%;
+  }
+  .fx-box.readonly{background:var(--card-alt);}
+  .fx-box .cur{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--tea); flex:none;}
+  .fx-arrow{display:flex; justify-content:center; margin:10px 0; color:var(--tea);}
+  .fx-arrow svg{width:16px; height:16px; stroke:var(--tea); fill:none; stroke-width:1.8;}
+  .fx-rate{
+    text-align:center; font-size:12px; color:var(--muted); margin-top:14px; font-style:italic;
+  }
+  .fx-rate input{
+    width:56px; border:none; border-bottom:1px dashed var(--tea); background:transparent;
+    font-family:'JetBrains Mono',monospace; font-style:normal; font-size:12.5px; color:var(--tea-deep);
+    text-align:center; outline:none;
+  }
+  .refund-line{
+    display:none; margin-top:12px; padding-top:14px; border-top:1px dashed var(--line);
+    align-items:center; justify-content:space-between;
+  }
+  .refund-line.show{display:flex;}
+  .refund-line .rlabel{font-size:12.5px; color:var(--clay); font-weight:700;}
+  .refund-line .rvalue{font-family:'JetBrains Mono',monospace; font-size:19px; color:var(--clay); font-weight:700;}
+  .refund-line .rsub{display:block; font-size:10.5px; color:var(--muted); font-weight:400; margin-top:2px;}
 
-    .eyebrow{
-      color:var(--accent);
-      letter-spacing:.18em;
-      font-size:12px;
-      font-weight:700;
-      text-transform:uppercase;
-    }
+  /* ---------- FLIGHTS ---------- */
+  .flight-card{
+    position:relative;
+    background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); padding:16px 18px 18px; margin-bottom:12px;
+  }
+  .flight-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
+  .flight-date{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--clay); font-weight:700;}
+  .flight-tag{
+    font-size:11px; font-weight:700; color:var(--tea-deep); background:var(--card-alt);
+    padding:4px 11px; border-radius:999px;
+  }
+  .flight-route{display:flex; align-items:center; gap:10px;}
+  .flight-code{font-family:'Noto Serif TC',serif; font-weight:700; font-size:26px; color:var(--tea-deep); flex:none;}
+  .flight-mid{flex:1; text-align:center;}
+  .flight-mid .dur{display:block; font-size:10.5px; color:var(--muted); margin-bottom:4px; font-family:'JetBrains Mono',monospace;}
+  .flight-line{position:relative; height:1px; background:var(--line);}
+  .flight-line svg{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:15px; height:15px; fill:var(--tea); background:var(--card); padding:2px;
+  }
+  .flight-bottom{display:flex; justify-content:space-between; margin-top:10px;}
+  .flight-time{font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--ink); font-weight:600;}
+  .flight-airport{font-size:11px; color:var(--muted); margin-top:2px;}
+  .flight-bottom .r{text-align:right;}
 
-    h1{
-      margin:7px 0 8px;
-      font-size:clamp(30px,8vw,48px);
-      line-height:1.12;
-      letter-spacing:-.04em;
-      font-weight:650;
-    }
+  /* ---------- STAY CARDS ---------- */
+  .stay-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:15px 17px; margin-bottom:10px; display:flex; gap:12px; align-items:flex-start;
+  }
+  .stay-card svg{width:19px; height:19px; flex:none; stroke:var(--tea); fill:none; stroke-width:1.5; margin-top:3px;}
+  .stay-nights{font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--tea); letter-spacing:.06em; display:block; margin-bottom:4px;}
+  .stay-name{font-weight:700; color:var(--tea-deep); font-size:14.2px;}
+  .stay-addr{font-size:12px; color:var(--muted); margin-top:3px;}
 
-    .hero p{
-      margin:0;
-      color:var(--sub);
-      font-size:14px;
-    }
+  /* ---------- DAY NAV PILLS (inline, inside itinerary section) ---------- */
+  .day-pills{display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:6px; scrollbar-width:none;}
+  .day-pills::-webkit-scrollbar{display:none;}
+  .day-pills a{
+    flex:none; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600;
+    padding:7px 13px; border:1px solid var(--line); border-radius:999px;
+    color:var(--tea-deep); background:var(--card); white-space:nowrap;
+  }
 
-    .mini-nav{
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      padding:4px 0 18px;
-      scrollbar-width:none;
-      position:sticky;
-      top:0;
-      z-index:20;
-      background:linear-gradient(var(--bg) 75%,transparent);
-    }
-    .mini-nav::-webkit-scrollbar{display:none}
-    .mini-nav a{
-      flex:0 0 auto;
-      text-decoration:none;
-      color:var(--ink);
-      background:rgba(255,253,248,.9);
-      border:1px solid var(--line);
-      padding:9px 13px;
-      border-radius:999px;
-      font-size:13px;
-      backdrop-filter:blur(12px);
-    }
+  /* ---------- DAY CARDS (luggage tag) ---------- */
+  .day-card{
+    position:relative; background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); margin-bottom:20px; scroll-margin-top:16px;
+  }
+  .tag-head{
+    position:relative; display:flex; align-items:center; gap:12px;
+    padding:16px 18px 20px; background:var(--card-alt);
+    border-radius:var(--radius) var(--radius) 0 0;
+  }
+  .grommet{width:26px; height:26px; border-radius:50%; border:2px solid var(--tea); background:var(--bg); flex:none;}
+  .tag-head .day-id{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--tea); letter-spacing:.1em; display:block; margin-bottom:2px;}
+  .tag-head h3{font-size:16.5px; line-height:1.4;}
+  .perforation{position:relative; height:1px; border-top:1.5px dashed var(--line); margin:0 14px;}
+  .perforation::before,.perforation::after{content:""; position:absolute; top:-8px; width:16px; height:16px; background:var(--bg); border-radius:50%;}
+  .perforation::before{left:-22px;}
+  .perforation::after{right:-22px;}
+  .tag-body{padding:18px 18px 6px;}
 
-    .section-title{
-      margin:28px 2px 12px;
-      font-size:13px;
-      letter-spacing:.14em;
-      color:var(--accent-dark);
-      font-weight:750;
-    }
+  .timeline{list-style:none; margin:0 0 18px; padding:0;}
+  .timeline li{position:relative; padding-left:20px; padding-bottom:12px; font-size:13.3px;}
+  .timeline li:last-child{padding-bottom:0;}
+  .timeline li::before{content:""; position:absolute; left:0; top:6px; width:7px; height:7px; border-radius:50%; background:var(--tea);}
+  .timeline li::after{content:""; position:absolute; left:3px; top:14px; bottom:-2px; width:1px; background:var(--line);}
+  .timeline li:last-child::after{display:none;}
 
-    .card{
-      background:var(--paper);
-      border:1px solid rgba(221,211,197,.9);
-      box-shadow:var(--shadow);
-      border-radius:var(--radius);
-      margin-bottom:12px;
-      overflow:hidden;
-    }
+  .meal-row{display:grid; grid-template-columns:44px 1fr; gap:10px; padding:11px 0; border-top:1px solid var(--line);}
+  .meal-tag{font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600; color:var(--clay); background:var(--clay-soft); border-radius:6px; text-align:center; padding:4px 0; height:fit-content;}
+  .meal-name{font-weight:700; font-size:13.6px; color:var(--tea-deep);}
+  .meal-note{font-size:12.2px; color:var(--muted); margin-top:2px;}
 
-    .info-card{padding:19px}
-    .info-grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-    }
+  .stay-foot{display:flex; align-items:center; gap:8px; margin:14px 0 4px; padding-top:12px; border-top:1px solid var(--line); font-size:12.4px; color:var(--muted);}
+  .stay-foot svg{width:14px; height:14px; stroke:var(--tea); fill:none; stroke-width:1.6;}
+  .stay-foot b{color:var(--tea-deep); font-weight:700;}
 
-    .info-row{
-      padding-bottom:12px;
-      border-bottom:1px solid var(--line);
-    }
-    .info-row:last-child{border-bottom:0;padding-bottom:0}
-    .label{
-      font-size:11px;
-      letter-spacing:.12em;
-      color:var(--sub);
-      font-weight:750;
-      text-transform:uppercase;
-    }
-    .value{margin-top:3px;font-size:15px}
-    .muted{color:var(--sub);font-size:13px}
+  /* ---------- FOOD LIST ---------- */
+  .food-row{
+    display:flex; gap:12px; align-items:center;
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:13px 16px; margin-bottom:9px;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .food-row:active{background:var(--card-alt); transform:scale(.99);}
+  .food-row > div{flex:1;}
+  .food-pin{width:17px; height:17px; flex:none; stroke:var(--clay); fill:none; stroke-width:1.6; margin-left:auto; align-self:center;}
+  .food-day{
+    flex:none; font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+    color:var(--tea); background:var(--card-alt); border-radius:8px; padding:5px 8px; height:fit-content;
+  }
+  .food-meal{font-family:'JetBrains Mono',monospace; font-size:9.5px; color:var(--muted); display:block; margin-bottom:2px; letter-spacing:.05em;}
+  .food-name{font-weight:700; font-size:13.6px; color:var(--tea-deep);}
+  .food-note{font-size:12px; color:var(--muted); margin-top:2px;}
 
-    details.day summary{
-      list-style:none;
-      display:flex;
-      align-items:center;
-      gap:14px;
-      padding:18px;
-      user-select:none;
-    }
-    details.day summary::-webkit-details-marker{display:none}
-    details.day[open] summary{border-bottom:1px solid var(--line)}
+  /* ---------- FOOTER ---------- */
+  .footer{max-width:var(--max); margin:30px auto 10px; padding:0 20px 10px; font-size:12px; color:var(--muted); text-align:center;}
+  .footer .rule{width:36px; height:1px; background:var(--line); margin:0 auto 14px;}
 
-    .day-badge{
-      width:48px;height:48px;
-      border-radius:16px;
-      display:grid;
-      place-items:center;
-      flex:0 0 auto;
-      background:var(--paper-2);
-      color:var(--accent-dark);
-      font-weight:800;
-      letter-spacing:.04em;
-    }
-    .day-head{flex:1}
-    .day-head strong{
-      display:block;
-      line-height:1.35;
-      font-size:16px;
-    }
-    .day-head span{color:var(--sub);font-size:12px}
-    .chev{font-size:20px;color:var(--accent);transition:.2s}
-    details[open] .chev{transform:rotate(45deg)}
-
-    .day-body{padding:18px}
-    .route{
-      background:#f8f4ed;
-      border-radius:16px;
-      padding:14px 15px;
-      font-size:14px;
-      margin-bottom:15px;
-    }
-
-    .meal{
-      display:grid;
-      grid-template-columns:58px 1fr;
-      gap:11px;
-      padding:11px 0;
-      border-bottom:1px dashed var(--line);
-    }
-    .meal:last-child{border-bottom:0}
-    .meal-type{
-      color:var(--accent-dark);
-      font-size:12px;
-      font-weight:800;
-    }
-    .meal-name{font-size:14px;font-weight:650}
-    .meal-desc{font-size:12px;color:var(--sub);margin-top:2px}
-
-    .calc{padding:20px}
-    .calc h2{font-size:20px;margin:0 0 5px}
-    .calc .hint{margin:0 0 17px;color:var(--sub);font-size:12px}
-    .field{
-      display:grid;
-      grid-template-columns:1fr auto;
-      align-items:center;
-      background:#f8f4ed;
-      border:1px solid var(--line);
-      border-radius:15px;
-      padding:4px 12px;
-      margin:10px 0;
-    }
-    .field input{
-      width:100%;
-      border:0;
-      outline:0;
-      background:transparent;
-      color:var(--ink);
-      padding:11px 0;
-      font-size:20px;
-      font-weight:650;
-      min-width:0;
-    }
-    .unit{font-size:12px;color:var(--sub);font-weight:700}
-
-    .rate-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:9px;
-      margin-top:10px;
-    }
-    .small-field{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:9px 11px;
-      background:var(--paper);
-    }
-    .small-field label{display:block;font-size:11px;color:var(--sub)}
-    .small-field input{
-      width:100%;border:0;outline:0;background:transparent;
-      color:var(--ink);font-weight:700;font-size:15px;padding:2px 0 0;
-    }
-
-    .tax-toggle{
-      width:100%;
-      border:1px solid var(--line);
-      background:var(--paper);
-      color:var(--ink);
-      border-radius:15px;
-      padding:12px 14px;
-      margin-top:10px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      text-align:left;
-    }
-    .tax-toggle.active{
-      background:#e8e4d9;
-      border-color:#c9bdac;
-    }
-    .switch{
-      width:38px;height:22px;border-radius:99px;
-      background:#d4cec5;position:relative;transition:.2s;
-    }
-    .switch::after{
-      content:"";position:absolute;width:16px;height:16px;border-radius:50%;
-      background:white;top:3px;left:3px;transition:.2s;
-      box-shadow:0 1px 4px rgba(0,0,0,.15);
-    }
-    .tax-toggle.active .switch{background:var(--green)}
-    .tax-toggle.active .switch::after{left:19px}
-
-    .result{
-      margin-top:14px;
-      border-radius:18px;
-      background:var(--accent-dark);
-      color:#fffaf3;
-      padding:17px;
-    }
-    .result-label{font-size:11px;opacity:.72;letter-spacing:.08em}
-    .result-value{font-size:30px;font-weight:760;line-height:1.25}
-    .result-small{font-size:12px;opacity:.78;margin-top:4px}
-
-    .note{
-      margin-top:11px;
-      font-size:11px;
-      color:var(--sub);
-      line-height:1.65;
-    }
-
-    footer{
-      text-align:center;
-      color:var(--sub);
-      font-size:11px;
-      padding:28px 0 0;
-    }
-
-    @media (min-width:640px){
-      .wrap{padding-left:24px;padding-right:24px}
-      .info-grid{grid-template-columns:1fr 1fr}
-      .info-row{border-bottom:0;padding-bottom:0}
-    }
-  </style>
+  /* ---------- BOTTOM TAB BAR ---------- */
+  .tab-bar{
+    flex:none;
+    background:rgba(251,248,241,.94); backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-around;
+    padding:9px 10px calc(9px + env(safe-area-inset-bottom));
+  }
+  .tab-item{display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--muted); flex:1; background:none; border:none; padding:0; font-family:inherit; cursor:pointer;}
+  .tab-item svg{width:22px; height:22px; stroke:var(--muted); fill:none; stroke-width:1.6;}
+  .tab-item span{font-size:10.5px; font-weight:600;}
+  .tab-item .dot{width:4px; height:4px; border-radius:50%; background:transparent; margin-top:1px;}
+  .tab-item.active{color:var(--clay);}
+  .tab-item.active svg{stroke:var(--clay);}
+  .tab-item.active .dot{background:var(--clay);}
+</style>
 </head>
-
 <body>
-  <main class="wrap">
-    <header class="hero">
-      <div class="eyebrow">Fukuoka · Beppu · Yufuin</div>
-      <h1>福岡 6 天 5 夜</h1>
-      <p>溫泉、老街、咖啡、拉麵與九州美食旅行。</p>
-    </header>
 
-    <nav class="mini-nav" aria-label="快速導覽">
-      <a href="#flight">航班</a>
-      <a href="#stay">住宿</a>
-      <a href="#days">每日行程</a>
-      <a href="#calculator">換匯 / 退稅</a>
-    </nav>
+<div class="page-container">
 
-    <div id="flight" class="section-title">FLIGHT · 航班</div>
-    <section class="card info-card">
-      <div class="info-grid">
-        <div class="info-row">
-          <div class="label">去程 · D1</div>
-          <div class="value"><strong>長榮航空 BR106</strong></div>
-          <div class="muted">桃園 T2 08:00 → 福岡 T1 11:20</div>
-        </div>
-        <div class="info-row">
-          <div class="label">回程 · D6</div>
-          <div class="value"><strong>長榮航空 BR101</strong></div>
-          <div class="muted">福岡 T1 19:20 → 桃園 T2 20:45</div>
-        </div>
+<div class="page active" id="page-home">
+<!-- ---------- HERO ---------- -->
+<header class="hero" id="home">
+  <div class="hero-top">
+    <div>
+      <p class="eyebrow">Fukuoka &amp; Beppu</p>
+      <h1>福岡．別府<br>秋日行</h1>
+      <p class="hero-dates">Oct 7 – Oct 12, 2026 · 6 Days 5 Nights</p>
+    </div>
+    <div class="depart-badge">
+      <span class="big" id="departBig">—</span>
+      <span class="small" id="departSmall">出發倒數</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ---------- CLIMATE ---------- -->
+  <div class="section-title">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M6 18a4 4 0 010-8 5 5 0 019.6-1.5A4.5 4.5 0 0118.5 17H7"/></svg>
+    <h2>出發氣候參考</h2>
+  </div>
+  <div class="climate-row">
+    <div class="climate-card">
+      <div class="city-head">
+        <div><span class="city-en">FUKUOKA</span><div class="city-name">福岡</div></div>
+        <svg class="wicon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
       </div>
-    </section>
-
-    <div id="stay" class="section-title">STAY · 住宿</div>
-    <section class="card info-card">
-      <div class="info-row">
-        <div class="label">D1–D2 · 別府</div>
-        <div class="value"><strong>Villa 水鏡の雫（UGO 3–5樓）</strong></div>
-        <div class="muted">9 Chome-3 Ishigakinishi, Beppu, Oita 874-0910</div>
+      <div class="temp">24–27°</div>
+      <div class="cond">晴時多雲・秋高氣爽</div>
+      <div class="meta"><span>💧 65%</span><span>🌬 12km/h</span></div>
+    </div>
+    <div class="climate-card">
+      <div class="city-head">
+        <div><span class="city-en">BEPPU</span><div class="city-name">別府</div></div>
+        <svg class="wicon" viewBox="0 0 24 24"><path d="M6 18a4 4 0 010-8 5 5 0 019.6-1.5A4.5 4.5 0 0118.5 17H7"/></svg>
       </div>
-      <div class="info-row" style="margin-top:14px">
-        <div class="label">D3–D5 · 福岡赤坂</div>
-        <div class="value"><strong>福岡市區民宿</strong></div>
-        <div class="muted">〒810-0042 Fukuoka, Chuo Ward, 赤坂 3 Chome−9−26 中村ビル 1F</div>
+      <div class="temp">22–25°</div>
+      <div class="cond">大致晴朗・早晚涼爽</div>
+      <div class="meta"><span>💧 68%</span><span>🌬 10km/h</span></div>
+    </div>
+  </div>
+  <p class="climate-note">十月初為九州秋季，日夜溫差較大，建議洋蔥式穿搭並攜帶薄外套；正式預報請於出發前一週再次查詢。</p>
+
+  <!-- ---------- FX + REFUND ---------- -->
+  <div class="section-title">
+    <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 15.5c.5.7 1.3 1 2.2 1 1.6 0 2.8-.9 2.8-2s-1.2-1.6-2.8-2c-1.6-.4-2.8-.9-2.8-2s1.2-2 2.8-2c.9 0 1.7.3 2.2 1M12 7v1.5M12 15.5V17"/></svg>
+    <h2>匯率換算</h2>
+    <button class="pill-btn" id="refundToggle">退稅 -10%</button>
+  </div>
+
+  <div class="fx-card">
+    <div class="fx-row">
+      <span class="fx-label">日圓</span>
+      <div class="fx-box">
+        <input type="number" id="jpyInput" inputmode="decimal" placeholder="輸入日圓金額">
+        <span class="cur">JPY</span>
       </div>
-    </section>
-
-    <div id="days" class="section-title">ITINERARY · 每日行程</div>
-
-    <details class="card day" open>
-      <summary>
-        <div class="day-badge">D1</div>
-        <div class="day-head">
-          <strong>啟程與溫泉鄉之夜</strong>
-          <span>福岡 → 由布院 → 別府</span>
-        </div>
-        <div class="chev">＋</div>
-      </summary>
-      <div class="day-body">
-        <div class="route">抵達福岡機場 11:20 → 博多車站 → 由布院之森 5 號 → 金鱗湖 → 別府 Check-in</div>
-        <div class="meal"><div class="meal-type">午餐</div><div><div class="meal-name">博多車站特色鐵道便當</div><div class="meal-desc">博多站內選購，列車上享用</div></div></div>
-        <div class="meal"><div class="meal-type">點心</div><div><div class="meal-name">B-Speak 蛋糕卷 / 金賞可樂餅</div><div class="meal-desc">由布院散策人氣點心</div></div></div>
-        <div class="meal"><div class="meal-type">晚餐</div><div><div class="meal-name">とんかつ山本ロイン</div><div class="meal-desc">別府在地人氣炸豬排專門店</div></div></div>
+    </div>
+    <div class="fx-arrow"><svg viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+    <div class="fx-row">
+      <span class="fx-label">台幣</span>
+      <div class="fx-box readonly">
+        <input type="text" id="twdOutput" readonly>
+        <span class="cur">TWD</span>
       </div>
-    </details>
+    </div>
+    <p class="fx-rate">參考匯率：1 JPY = <input type="number" id="rateInput" step="0.001" value="0.215"> TWD</p>
 
-    <details class="card day">
-      <summary>
-        <div class="day-badge">D2</div>
-        <div class="day-head">
-          <strong>由布院老街與別府地獄巡禮</strong>
-          <span>湯之坪 · 纜車 · 海地獄</span>
-        </div>
-        <div class="chev">＋</div>
-      </summary>
-      <div class="day-body">
-        <div class="route">別府出發 → 湯之坪街道 → 別府空中纜車 → 海地獄（17:00 閉園）→ 別府市區</div>
-        <div class="meal"><div class="meal-type">午餐</div><div><div class="meal-name">由布まぶし 心</div><div class="meal-desc">豐後牛 / 鰻魚 / 地雞三吃釜飯</div></div></div>
-        <div class="meal"><div class="meal-type">晚餐</div><div><div class="meal-name">焼肉元相 本店</div><div class="meal-desc">約 17:30–18:30 · 大分黑毛和牛</div></div></div>
+    <div class="refund-line" id="refundLine">
+      <div class="rlabel">退稅後金額（打 9 折）<span class="rsub">日圓消費稅約 10%，退稅後估算</span></div>
+      <div class="rvalue" id="refundValue">NT$0</div>
+    </div>
+  </div>
+
+  <!-- ---------- FLIGHTS ---------- -->
+  <div class="section-title">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 2.5 2 7L21 3z"/></svg>
+    <h2>航班資訊</h2>
+  </div>
+
+  <div class="flight-card">
+    <div class="flight-top">
+      <span class="flight-date">10/7（三）出發</span>
+      <span class="flight-tag">去程 · BR106</span>
+    </div>
+    <div class="flight-route">
+      <span class="flight-code">TPE</span>
+      <div class="flight-mid">
+        <span class="dur">約 2h20m</span>
+        <div class="flight-line"><svg viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 2.5 2 7L21 3z"/></svg></div>
       </div>
-    </details>
+      <span class="flight-code">FUK</span>
+    </div>
+    <div class="flight-bottom">
+      <div><span class="flight-time">08:00</span><div class="flight-airport">T2 台北桃園</div></div>
+      <div class="r"><span class="flight-time">11:20</span><div class="flight-airport">TI 福岡</div></div>
+    </div>
+  </div>
 
-    <details class="card day">
-      <summary>
-        <div class="day-badge">D3</div>
-        <div class="day-head">
-          <strong>野生動物園、浮羽與柳川</strong>
-          <span>African Safari · 吉井町 · 柳川</span>
-        </div>
-        <div class="chev">＋</div>
-      </summary>
-      <div class="day-body">
-        <div class="route">別府 → 九州自然野生動物園 → ぱんのもっか → 柳川人力遊船 → 福岡赤坂 Check-in</div>
-        <div class="meal"><div class="meal-type">點心</div><div><div class="meal-name">ぱんのもっか</div><div class="meal-desc">吉井町白壁老街人氣手作麵包</div></div></div>
-        <div class="meal"><div class="meal-type">午餐</div><div><div class="meal-name">若松屋 / 元祖 本吉屋</div><div class="meal-desc">柳川蒸籠鰻魚飯</div></div></div>
-        <div class="meal"><div class="meal-type">晚餐</div><div><div class="meal-name">極味や</div><div class="meal-desc">天神 PARCO / 博多站 · 伊萬里牛鐵板漢堡排</div></div></div>
+  <div class="flight-card">
+    <div class="flight-top">
+      <span class="flight-date">10/12（一）返台</span>
+      <span class="flight-tag">回程 · BR101</span>
+    </div>
+    <div class="flight-route">
+      <span class="flight-code">FUK</span>
+      <div class="flight-mid">
+        <span class="dur">約 2h25m</span>
+        <div class="flight-line"><svg viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 2.5 2 7L21 3z"/></svg></div>
       </div>
-    </details>
+      <span class="flight-code">TPE</span>
+    </div>
+    <div class="flight-bottom">
+      <div><span class="flight-time">19:20</span><div class="flight-airport">TI 福岡</div></div>
+      <div class="r"><span class="flight-time">20:45</span><div class="flight-airport">T2 台北桃園</div></div>
+    </div>
+  </div>
 
-    <details class="card day">
-      <summary>
-        <div class="day-badge">D4</div>
-        <div class="day-head">
-          <strong>神社、抹茶、咖啡與拉麵</strong>
-          <span>太宰府 · 南藏院 · 博多市區</span>
-        </div>
-        <div class="chev">＋</div>
-      </summary>
-      <div class="day-body">
-        <div class="route">赤坂民宿 → 太宰府天滿宮 → 南藏院 → 櫛田神社 / Canal City → 民宿</div>
-        <div class="meal"><div class="meal-type">甜點</div><div><div class="meal-name">茶和々 ＋ かさの家</div><div class="meal-desc">抹茶霜淇淋、抹茶蕨餅、現烤梅枝餅</div></div></div>
-        <div class="meal"><div class="meal-type">午餐</div><div><div class="meal-name">海老香る醤油らぁ麺 寿</div><div class="meal-desc">蝦油醬油拉麵 ＆ 炙烤叉燒飯</div></div></div>
-        <div class="meal"><div class="meal-type">下午茶</div><div><div class="meal-name">FUK COFFEE 祇園店</div><div class="meal-desc">焦糖布丁 ＋ 航空旅行風拿鐵</div></div></div>
-        <div class="meal"><div class="meal-type">晚餐</div><div><div class="meal-name">麺や ISHII</div><div class="meal-desc">天神大名周邊人氣沾麵 / 拉麵</div></div></div>
-      </div>
-    </details>
+  <!-- ---------- STAY ---------- -->
+  <div class="section-title">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18M3 18v2M21 18v2M7 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
+    <h2>住宿資訊</h2>
+  </div>
 
-    <details class="card day">
-      <summary>
-        <div class="day-badge">D5</div>
-        <div class="day-head">
-          <strong>市區散策、牛舌與壽司</strong>
-          <span>大濠公園 · 天神 · 博多</span>
-        </div>
-        <div class="chev">＋</div>
-      </summary>
-      <div class="day-body">
-        <div class="route">大濠公園 → 天神地下街 → 博多 AMU PLAZA 自由購物</div>
-        <div class="meal"><div class="meal-type">咖啡</div><div><div class="meal-name">FUK COFFEE Parks</div><div class="meal-desc">大濠公園店</div></div></div>
-        <div class="meal"><div class="meal-type">午餐</div><div><div class="meal-name">牛たん炭焼 利久</div><div class="meal-desc">JR 博多城 9F / KITTE 博多 B1 · 厚切牛舌</div></div></div>
-        <div class="meal"><div class="meal-type">晚餐</div><div><div class="meal-name">廻転寿司 冨士丸 赤坂店</div><div class="meal-desc">握壽司與生魚片</div></div></div>
-      </div>
-    </details>
+  <div class="stay-card">
+    <svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18M3 18v2M21 18v2M7 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
+    <div>
+      <span class="stay-nights">別府 · 10/7–10/9 · 共 2 晚</span>
+      <div class="stay-name">Villa 水鏡の雫（UGO 3–5樓）</div>
+      <div class="stay-addr">9 Chome-3 Ishigakinishi, Beppu, Oita 874-0910 日本</div>
+    </div>
+  </div>
+  <div class="stay-card">
+    <svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18M3 18v2M21 18v2M7 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
+    <div>
+      <span class="stay-nights">福岡市區 · 10/9–10/12 · 共 3 晚</span>
+      <div class="stay-name">福岡市區民宿（赤坂）</div>
+      <div class="stay-addr">〒810-0042 福岡市中央区赤坂 3-9-26 中村ビル 1F</div>
+    </div>
+  </div>
 
-    <details class="card day">
-      <summary>
-        <div class="day-badge">D6</div>
-        <div class="day-head">
-          <strong>最後採買與返程</strong>
-          <span>赤坂 · 天神 · 福岡機場</span>
-        </div>
-        <div class="chev">＋</div>
-      </summary>
-      <div class="day-body">
-        <div class="route">赤坂 / 天神最後採買 → 約 16:50 前抵達福岡機場 T1 → BR101 19:20 起飛</div>
-        <div class="meal"><div class="meal-type">午餐</div><div><div class="meal-name">元祖博多めんたい重</div><div class="meal-desc">福岡元祖明太子專賣飯</div></div></div>
-        <div class="meal"><div class="meal-type">晚餐</div><div><div class="meal-name">機場輕食 / 飛機餐</div><div class="meal-desc">依登機時間彈性安排</div></div></div>
-      </div>
-    </details>
+</div>
+</div>
 
-    <div id="calculator" class="section-title">TRAVEL TOOL · 旅行工具</div>
-    <section class="card calc">
-      <h2>日幣換算</h2>
-      <p class="hint">輸入日本看到的價格，快速換算成台幣。</p>
+<!-- ================= ITINERARY ================= -->
+<div class="page" id="page-itinerary">
+<div class="wrap">
+  <div class="section-title" style="margin-top:40px">
+    <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+    <h2>每日行程</h2>
+  </div>
 
-      <div class="field">
-        <input id="jpy" type="number" inputmode="decimal" value="10000" min="0" aria-label="日幣金額">
-        <span class="unit">JPY ¥</span>
-      </div>
+  <div class="day-pills">
+    <a href="#d1">D1</a><a href="#d2">D2</a><a href="#d3">D3</a>
+    <a href="#d4">D4</a><a href="#d5">D5</a><a href="#d6">D6</a>
+  </div>
 
-      <div class="rate-row">
-        <div class="small-field">
-          <label for="rate">1 JPY = TWD</label>
-          <input id="rate" type="number" inputmode="decimal" value="0.2100" step="0.0001" min="0">
-        </div>
-        <div class="small-field">
-          <label for="taxRate">退稅稅率</label>
-          <input id="taxRate" type="number" inputmode="decimal" value="10" step="1" min="0" max="100">
-        </div>
-      </div>
+  <article class="day-card" id="d1">
+    <div class="tag-head"><div class="grommet"></div>
+      <div><span class="day-id">DAY 01 · 10/7</span><h3>啟程與溫泉鄉之夜</h3></div>
+    </div>
+    <div class="perforation"></div>
+    <div class="tag-body">
+      <ul class="timeline">
+        <li>抵達福岡機場（11:20）</li>
+        <li>博多車站搭乘由布院之森 5 號</li>
+        <li>由布院金鱗湖散策</li>
+        <li>前往別府，Check-in</li>
+      </ul>
+      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">博多車站特色鐵道便當</div><div class="meal-note">於博多站內選購，由布院之森列車上品嚐</div></div></div>
+      <div class="meal-row"><span class="meal-tag">點心</span><div><div class="meal-name">由布院特色點心</div><div class="meal-note">B-Speak 蛋糕卷、金賞可樂餅</div></div></div>
+      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">とんかつ山本ロイン</div><div class="meal-note">Tonkatsu Yamamoto Loin · 別府在地人氣炸豬排專門店</div></div></div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>Villa 水鏡の雫</b></div>
+    </div>
+  </article>
 
-      <button class="tax-toggle" id="taxToggle" type="button" aria-pressed="false">
-        <span>
-          <strong>套用退稅試算</strong><br>
-          <small style="color:var(--sub)">以含稅價格回推未稅價</small>
-        </span>
-        <span class="switch" aria-hidden="true"></span>
-      </button>
+  <article class="day-card" id="d2">
+    <div class="tag-head"><div class="grommet"></div>
+      <div><span class="day-id">DAY 02 · 10/8</span><h3>由布院老街與別府地獄巡禮</h3></div>
+    </div>
+    <div class="perforation"></div>
+    <div class="tag-body">
+      <ul class="timeline">
+        <li>別府出發</li>
+        <li>由布院老街散策（湯之坪街道）</li>
+        <li>別府空中纜車</li>
+        <li>別府海地獄（17:00 閉園）</li>
+        <li>返回別府市區</li>
+      </ul>
+      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">由布まぶし 心</div><div class="meal-note">金鱗湖本店／站前店 · 招牌豐後牛、鰻魚、地雞三吃釜飯</div></div></div>
+      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">燒肉元相 本店</div><div class="meal-note">焼肉元相 本店 · 大分黑毛和牛燒肉名店 · 約 17:30–18:30 用餐</div></div></div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>Villa 水鏡の雫</b></div>
+    </div>
+  </article>
 
-      <div class="result" aria-live="polite">
-        <div class="result-label">估算台幣</div>
-        <div class="result-value" id="twd">NT$ 2,100</div>
-        <div class="result-small" id="detail">¥10,000 × 0.2100</div>
-      </div>
+  <article class="day-card" id="d3">
+    <div class="tag-head"><div class="grommet"></div>
+      <div><span class="day-id">DAY 03 · 10/9</span><h3>野生動物園、浮羽老街與柳川水鄉</h3></div>
+    </div>
+    <div class="perforation"></div>
+    <div class="tag-body">
+      <ul class="timeline">
+        <li>別府出發</li>
+        <li>九州自然野生動物園（African Safari）</li>
+        <li>浮羽市「ぱんのもっか」麵包店</li>
+        <li>柳川人力遊船</li>
+        <li>前往福岡市區，Check-in</li>
+      </ul>
+      <div class="meal-row"><span class="meal-tag">點心</span><div><div class="meal-name">ぱんのもっか（Pan no Mokka）</div><div class="meal-note">超人氣吉井町白壁老街手作麵包</div></div></div>
+      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">柳川蒸籠鰻魚飯</div><div class="meal-note">うなぎ料理 若松屋 或 元祖 本吉屋</div></div></div>
+      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">極味屋（極味や）</div><div class="meal-note">天神帕爾可店／博多站店 · 超人氣炭燒伊萬里牛鐵板漢堡排</div></div></div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>福岡市區赤坂民宿</b></div>
+    </div>
+  </article>
 
-      <div class="note">
-        匯率可自行依信用卡、現金換匯或當日牌告修改。退稅模式使用「含稅價 ÷ (1 + 稅率)」估算，而不是直接減 10%；實際退稅資格、手續費與店家制度依現場為準。
-      </div>
-    </section>
+  <article class="day-card" id="d4">
+    <div class="tag-head"><div class="grommet"></div>
+      <div><span class="day-id">DAY 04 · 10/10</span><h3>神社參拜、抹茶甜點、特色咖啡與福岡拉麵</h3></div>
+    </div>
+    <div class="perforation"></div>
+    <div class="tag-body">
+      <ul class="timeline">
+        <li>福岡民宿出發</li>
+        <li>太宰府天滿宮</li>
+        <li>南藏院（世界最大釋迦涅槃佛像）</li>
+        <li>市區散策（櫛田神社／運河城）</li>
+        <li>返回民宿</li>
+      </ul>
+      <div class="meal-row"><span class="meal-tag">表參道</span><div><div class="meal-name">茶和々 太宰府店（SAWAWA）</div><div class="meal-note">濃郁抹茶霜淇淋、抹茶蕨餅　＋　現烤梅枝餅（かさの家）</div></div></div>
+      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">海老香る醤油らぁ麺 寿（Kotobuki）</div><div class="meal-note">太宰府站正對面 · 招牌蝦油醬油拉麵 ＆ 炙烤叉燒飯</div></div></div>
+      <div class="meal-row"><span class="meal-tag">下午茶</span><div><div class="meal-name">FUK COFFEE（祇園店）</div><div class="meal-note">招牌焦糖布丁＋旅行航空風拿鐵</div></div></div>
+      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">麺や ISHII（Menya ISHII）</div><div class="meal-note">天神大名周邊人氣沾麵／拉麵</div></div></div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>福岡市區赤坂民宿</b></div>
+    </div>
+  </article>
 
-    <footer>KYUSHU TRIP BOOK · 6 DAYS / 5 NIGHTS</footer>
-  </main>
+  <article class="day-card" id="d5">
+    <div class="tag-head"><div class="grommet"></div>
+      <div><span class="day-id">DAY 05 · 10/11</span><h3>市區悠閒散策、公園咖啡、炭烤牛舌與壽司</h3></div>
+    </div>
+    <div class="perforation"></div>
+    <div class="tag-body">
+      <ul class="timeline">
+        <li>大濠公園散策</li>
+        <li>天神地下街</li>
+        <li>博多車站 AMU PLAZA 自由購物</li>
+      </ul>
+      <div class="meal-row"><span class="meal-tag">早咖啡</span><div><div class="meal-name">FUK COFFEE Parks（大濠公園店）</div><div class="meal-note">公園畔悠閒晨光咖啡</div></div></div>
+      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">牛たん炭焼 利久（博多店）</div><div class="meal-note">JR博多城 9F／KITTE博多 B1 · 招牌厚切炭烤牛舌定食</div></div></div>
+      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">廻転寿司 冨士丸（赤坂店）</div><div class="meal-note">赤坂民宿周邊人氣新鮮握壽司與生魚片</div></div></div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>福岡市區赤坂民宿</b></div>
+    </div>
+  </article>
 
-  <script>
-    const jpy = document.querySelector('#jpy');
-    const rate = document.querySelector('#rate');
-    const taxRate = document.querySelector('#taxRate');
-    const taxToggle = document.querySelector('#taxToggle');
-    const twd = document.querySelector('#twd');
-    const detail = document.querySelector('#detail');
+  <article class="day-card" id="d6">
+    <div class="tag-head"><div class="grommet"></div>
+      <div><span class="day-id">DAY 06 · 10/12</span><h3>市區最後採買與返程</h3></div>
+    </div>
+    <div class="perforation"></div>
+    <div class="tag-body">
+      <ul class="timeline">
+        <li>赤坂／天神周邊最後採買</li>
+        <li>約 16:50 前抵達福岡機場 TI 辦理登機</li>
+        <li>搭乘 BR101（19:20 起飛）返回台北桃園（20:45 抵達）</li>
+      </ul>
+      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">元祖博多めんたい重</div><div class="meal-note">福岡元祖明太子專賣飯</div></div></div>
+      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">機場輕食／飛機餐</div><div class="meal-note">福岡機場國際線出境大廳輕食</div></div></div>
+    </div>
+  </article>
+</div>
+</div>
 
-    let taxFree = false;
+<!-- ================= FOOD ================= -->
+<div class="page" id="page-food">
+<div class="wrap">
+  <div class="section-title" style="margin-top:40px">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0116 0M4 12h16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"/><path d="M8 3v3M12 2v4M16 3v3"/></svg>
+    <h2>美食地圖</h2>
+  </div>
+  <p class="climate-note" style="margin-top:-6px">點選任一項目即可開啟 Google 地圖導航前往。</p>
 
-    function n(v, fallback = 0){
-      const x = Number(v);
-      return Number.isFinite(x) ? x : fallback;
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%A8%E3%82%93%E3%81%8B%E3%81%A4%E5%B1%B1%E6%9C%AC%E3%83%AD%E3%82%A4%E3%83%B3%20%E5%88%A5%E5%BA%9C"><span class="food-day">D1</span><div><span class="food-meal">晚餐</span><div class="food-name">とんかつ山本ロイン</div><div class="food-note">別府在地人氣炸豬排專門店</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%94%B1%E5%B8%83%E3%81%BE%E3%81%B6%E3%81%97%20%E5%BF%83%20%E7%94%B1%E5%B8%83%E9%99%A2"><span class="food-day">D2</span><div><span class="food-meal">午餐</span><div class="food-name">由布まぶし 心</div><div class="food-note">豐後牛、鰻魚、地雞三吃釜飯</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%E5%85%83%E7%9B%B8%20%E6%9C%AC%E5%BA%97%20%E5%88%A5%E5%BA%9C"><span class="food-day">D2</span><div><span class="food-meal">晚餐</span><div class="food-name">燒肉元相 本店</div><div class="food-note">大分黑毛和牛燒肉名店</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%B1%E3%82%93%E3%81%AE%E3%82%82%E3%81%A3%E3%81%8B%20%E6%B5%AE%E7%BE%BD%E5%B8%82"><span class="food-day">D3</span><div><span class="food-meal">點心</span><div class="food-name">ぱんのもっか</div><div class="food-note">吉井町白壁老街手作麵包</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%86%E3%81%AA%E3%81%8E%E6%96%99%E7%90%86%E8%8B%A5%E6%9D%BE%E5%B1%8B%20%E6%9F%B3%E5%B7%9D"><span class="food-day">D3</span><div><span class="food-meal">午餐</span><div class="food-name">うなぎ料理 若松屋 ／ 本吉屋</div><div class="food-note">柳川蒸籠鰻魚飯</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E6%A5%B5%E5%91%B3%E3%82%84%20%E5%A4%A9%E7%A5%9E"><span class="food-day">D3</span><div><span class="food-meal">晚餐</span><div class="food-name">極味屋（極味や）</div><div class="food-note">炭燒伊萬里牛鐵板漢堡排</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E8%8C%B6%E5%92%8C%E3%80%85%20%E5%A4%AA%E5%AE%B0%E5%BA%9C%E5%BA%97"><span class="food-day">D4</span><div><span class="food-meal">表參道</span><div class="food-name">茶和々 太宰府店 ＋ かさの家</div><div class="food-note">抹茶霜淇淋、抹茶蕨餅、現烤梅枝餅</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%82%89%E3%81%81%E9%BA%BA%20%E5%AF%BF%20%E5%A4%AA%E5%AE%B0%E5%BA%9C"><span class="food-day">D4</span><div><span class="food-meal">午餐</span><div class="food-name">海老香る醤油らぁ麺 寿</div><div class="food-note">招牌蝦油醬油拉麵 ＆ 炙烤叉燒飯</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=FUK%20COFFEE%20%E7%A5%87%E5%9C%92%E5%BA%97"><span class="food-day">D4</span><div><span class="food-meal">下午茶</span><div class="food-name">FUK COFFEE（祇園店）</div><div class="food-note">焦糖布丁＋拿鐵</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E9%BA%BA%E3%82%84ISHII%20%E5%A4%A9%E7%A5%9E%E5%A4%A7%E5%90%8D"><span class="food-day">D4</span><div><span class="food-meal">晚餐</span><div class="food-name">麺や ISHII</div><div class="food-note">天神大名沾麵／拉麵</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=FUK%20COFFEE%20Parks%20%E5%A4%A7%E6%BF%A0%E5%85%AC%E5%9C%92"><span class="food-day">D5</span><div><span class="food-meal">早咖啡</span><div class="food-name">FUK COFFEE Parks</div><div class="food-note">大濠公園店</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E3%81%9F%E3%82%93%E7%82%AD%E7%84%BC%20%E5%88%A9%E4%B9%85%20%E5%8D%9A%E5%A4%9A%E9%A7%85%E5%89%8D%E5%BA%97"><span class="food-day">D5</span><div><span class="food-meal">午餐</span><div class="food-name">牛たん炭焼 利久（博多店）</div><div class="food-note">厚切炭烤牛舌定食</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%9B%9E%E8%BB%A2%E5%AF%BF%E5%8F%B8%E5%86%A8%E5%A3%AB%E4%B8%B8%20%E8%B5%A4%E5%9D%82%E5%BA%97"><span class="food-day">D5</span><div><span class="food-meal">晚餐</span><div class="food-name">廻転寿司 冨士丸（赤坂店）</div><div class="food-note">新鮮握壽司與生魚片</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+  <a class="food-row" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%85%83%E7%A5%96%E5%8D%9A%E5%A4%9A%E3%82%81%E3%82%93%E3%81%9F%E3%81%84%E9%87%8D%20%E7%A6%8F%E5%B2%A1"><span class="food-day">D6</span><div><span class="food-meal">午餐</span><div class="food-name">元祖博多めんたい重</div><div class="food-note">福岡元祖明太子專賣飯</div></div><svg class="food-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></a>
+
+  <div class="footer">
+    <div class="rule"></div>
+    福岡．別府 6 日 5 夜　·　行程僅供旅行參考，實際時間請以現場為準
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- ---------- BOTTOM TAB BAR ---------- -->
+<nav class="tab-bar">
+  <button class="tab-item active" data-target="home">
+    <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>
+    <span>首頁</span><span class="dot"></span>
+  </button>
+  <button class="tab-item" data-target="itinerary">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+    <span>行程</span><span class="dot"></span>
+  </button>
+  <button class="tab-item" data-target="food">
+    <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0116 0M4 12h16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"/><path d="M8 3v3M12 2v4M16 3v3"/></svg>
+    <span>美食</span><span class="dot"></span>
+  </button>
+</nav>
+
+<script>
+  // ---------- Countdown badge ----------
+  (function(){
+    const depart = new Date('2026-10-07T08:00:00+08:00');
+    const ret = new Date('2026-10-12T20:45:00+08:00');
+    const now = new Date();
+    const big = document.getElementById('departBig');
+    const small = document.getElementById('departSmall');
+    const oneDay = 86400000;
+
+    if (now < depart){
+      const days = Math.ceil((depart - now) / oneDay);
+      big.textContent = days === 0 ? '出發囉！' : days + ' 天';
+      small.textContent = days === 0 ? '今天出發' : '出發倒數';
+    } else if (now >= depart && now <= ret){
+      const day = Math.min(6, Math.floor((now - depart) / oneDay) + 1);
+      big.textContent = 'Day ' + day;
+      small.textContent = '旅行進行中';
+    } else {
+      big.textContent = '旅途愉快';
+      small.textContent = '已完成行程';
     }
+  })();
 
-    function formatJPY(v){
-      return new Intl.NumberFormat('ja-JP', {
-        style:'currency', currency:'JPY', maximumFractionDigits:0
-      }).format(v);
+  // ---------- FX Converter ----------
+  const jpyInput = document.getElementById('jpyInput');
+  const twdOutput = document.getElementById('twdOutput');
+  const rateInput = document.getElementById('rateInput');
+  const refundToggle = document.getElementById('refundToggle');
+  const refundLine = document.getElementById('refundLine');
+  const refundValue = document.getElementById('refundValue');
+  let refundOn = false;
+
+  function fmt(n){ return isNaN(n) ? '0' : n.toLocaleString('en-US', {maximumFractionDigits: 1}); }
+
+  function calc(){
+    const jpy = parseFloat(jpyInput.value) || 0;
+    const rate = parseFloat(rateInput.value) || 0;
+    const twd = jpy * rate;
+    twdOutput.value = twd ? fmt(twd) : '';
+    if (refundOn){
+      refundValue.textContent = 'NT$' + fmt(twd * 0.9);
     }
+  }
+  jpyInput.addEventListener('input', calc);
+  rateInput.addEventListener('input', calc);
 
-    function formatTWD(v){
-      return new Intl.NumberFormat('zh-TW', {
-        style:'currency', currency:'TWD', maximumFractionDigits:0
-      }).format(v);
-    }
+  refundToggle.addEventListener('click', () => {
+    refundOn = !refundOn;
+    refundToggle.classList.toggle('active', refundOn);
+    refundLine.classList.toggle('show', refundOn);
+    calc();
+  });
 
-    function calculate(){
-      const amount = Math.max(0, n(jpy.value));
-      const fx = Math.max(0, n(rate.value));
-      const tax = Math.max(0, n(taxRate.value)) / 100;
+  calc();
 
-      const effectiveJPY = taxFree && tax > 0 ? amount / (1 + tax) : amount;
-      const result = effectiveJPY * fx;
+  // ---------- Bottom tab page switching ----------
+  const tabButtons = document.querySelectorAll('.tab-item');
+  const pages = document.querySelectorAll('.page');
 
-      twd.textContent = formatTWD(result);
+  function showPage(id){
+    pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + id));
+    tabButtons.forEach(t => t.classList.toggle('active', t.dataset.target === id));
+    const el = document.getElementById('page-' + id);
+    if (el) el.scrollTop = 0;
+  }
+  tabButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.target)));
 
-      if(taxFree){
-        const saved = amount - effectiveJPY;
-        detail.textContent =
-          `${formatJPY(amount)} → 退稅估算 ${formatJPY(effectiveJPY)} · 約省 ${formatJPY(saved)}`;
-      } else {
-        detail.textContent = `${formatJPY(amount)} × ${fx.toFixed(4)}`;
+  // ---------- Day-pill quick jump inside itinerary page ----------
+  const itineraryPage = document.getElementById('page-itinerary');
+  document.querySelectorAll('.day-pills a').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(a.getAttribute('href').slice(1));
+      if (target && itineraryPage){
+        itineraryPage.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
       }
-    }
-
-    taxToggle.addEventListener('click', () => {
-      taxFree = !taxFree;
-      taxToggle.classList.toggle('active', taxFree);
-      taxToggle.setAttribute('aria-pressed', String(taxFree));
-      calculate();
     });
-
-    [jpy, rate, taxRate].forEach(el => el.addEventListener('input', calculate));
-    calculate();
-  </script>
+  });
+</script>
 </body>
 </html>
