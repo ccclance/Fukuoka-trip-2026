@@ -1,3 +1,19 @@
+為您將完整程式碼進行了升級：
+
+### 修改重點：
+
+1. **行程卡片點擊收合／展開（Accordion）**：
+* 預設為**收起狀態**，卡片右上角新增旋轉箭頭指標。
+* 點擊卡片標頭（`tag-head`）即可自由展開／收起該日詳細內容。
+* 頂部的 **D1 ~ D6 快捷按鈕** 點擊時會**自動展開**該日卡片並平滑滾動至該處。
+
+
+2. **行程景點全面加入 Google 地圖導航連結**：
+* 每日時間軸景點、餐廳、住宿均加上專屬的地標與 Google Maps 連結，點擊即可一鍵開啟導航。
+
+
+
+```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -181,40 +197,82 @@
   .stay-name{font-weight:700; color:var(--tea-deep); font-size:14.2px;}
   .stay-addr{font-size:12px; color:var(--muted); margin-top:3px;}
 
-  /* ---------- DAY NAV PILLS (inline, inside itinerary section) ---------- */
-  .day-pills{display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:6px; scrollbar-width:none;}
+  /* ---------- DAY NAV PILLS ---------- */
+  .day-pills{display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:12px; scrollbar-width:none;}
   .day-pills::-webkit-scrollbar{display:none;}
   .day-pills a{
     flex:none; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600;
     padding:7px 13px; border:1px solid var(--line); border-radius:999px;
     color:var(--tea-deep); background:var(--card); white-space:nowrap;
+    cursor:pointer;
+  }
+  .day-pills a:hover, .day-pills a:active{
+    background:var(--card-alt); border-color:var(--tea);
   }
 
-  /* ---------- DAY CARDS (luggage tag) ---------- */
+  /* ---------- DAY CARDS (Collapsible Luggage Tag) ---------- */
   .day-card{
     position:relative; background:var(--card); border:1px solid var(--line);
-    border-radius:var(--radius); margin-bottom:20px; scroll-margin-top:16px;
+    border-radius:var(--radius); margin-bottom:14px; scroll-margin-top:16px;
+    transition:box-shadow .2s ease;
   }
   .tag-head{
     position:relative; display:flex; align-items:center; gap:12px;
-    padding:16px 18px 20px; background:var(--card-alt);
-    border-radius:var(--radius) var(--radius) 0 0;
+    padding:16px 18px; background:var(--card-alt);
+    border-radius:var(--radius);
+    cursor:pointer; user-select:none;
+    transition:border-radius .2s ease, background .15s ease;
   }
-  .grommet{width:26px; height:26px; border-radius:50%; border:2px solid var(--tea); background:var(--bg); flex:none;}
+  .tag-head:active{background:var(--line);}
+  .grommet{width:24px; height:24px; border-radius:50%; border:2px solid var(--tea); background:var(--bg); flex:none;}
   .tag-head .day-id{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--tea); letter-spacing:.1em; display:block; margin-bottom:2px;}
-  .tag-head h3{font-size:16.5px; line-height:1.4;}
+  .tag-head h3{font-size:15.5px; line-height:1.35; flex:1;}
+  
+  .tag-chevron{
+    width:18px; height:18px; stroke:var(--tea); fill:none; stroke-width:2; flex:none;
+    transition:transform .25s ease;
+  }
+
+  /* Collapsible Toggle States */
+  .day-card.open .tag-head{
+    border-radius:var(--radius) var(--radius) 0 0;
+    padding-bottom:18px;
+  }
+  .day-card.open .tag-chevron{
+    transform:rotate(180deg);
+    stroke:var(--clay);
+  }
+  .day-card:not(.open) .perforation,
+  .day-card:not(.open) .tag-body{
+    display:none;
+  }
+
   .perforation{position:relative; height:1px; border-top:1.5px dashed var(--line); margin:0 14px;}
   .perforation::before,.perforation::after{content:""; position:absolute; top:-8px; width:16px; height:16px; background:var(--bg); border-radius:50%;}
   .perforation::before{left:-22px;}
   .perforation::after{right:-22px;}
-  .tag-body{padding:18px 18px 6px;}
+  .tag-body{padding:18px 18px 12px;}
 
+  /* ---------- TIMELINE & MAP LINKS ---------- */
   .timeline{list-style:none; margin:0 0 18px; padding:0;}
   .timeline li{position:relative; padding-left:20px; padding-bottom:12px; font-size:13.3px;}
   .timeline li:last-child{padding-bottom:0;}
-  .timeline li::before{content:""; position:absolute; left:0; top:6px; width:7px; height:7px; border-radius:50%; background:var(--tea);}
-  .timeline li::after{content:""; position:absolute; left:3px; top:14px; bottom:-2px; width:1px; background:var(--line);}
+  .timeline li::before{content:""; position:absolute; left:0; top:7px; width:7px; height:7px; border-radius:50%; background:var(--tea);}
+  .timeline li::after{content:""; position:absolute; left:3px; top:15px; bottom:-2px; width:1px; background:var(--line);}
   .timeline li:last-child::after{display:none;}
+
+  .map-link{
+    display:inline-flex; align-items:center; gap:3px;
+    color:var(--tea-deep); font-weight:600;
+    text-decoration:underline; text-decoration-color:var(--line);
+    text-underline-offset:3px; transition:color .15s, text-decoration-color .15s;
+  }
+  .map-link:hover, .map-link:active{
+    color:var(--clay); text-decoration-color:var(--clay);
+  }
+  .map-link svg.inline-pin{
+    width:13px; height:13px; stroke:var(--clay); fill:none; stroke-width:1.8; flex:none;
+  }
 
   .meal-row{display:grid; grid-template-columns:44px 1fr; gap:10px; padding:11px 0; border-top:1px solid var(--line);}
   .meal-tag{font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600; color:var(--clay); background:var(--clay-soft); border-radius:6px; text-align:center; padding:4px 0; height:fit-content;}
@@ -394,22 +452,22 @@
     <h2>住宿資訊</h2>
   </div>
 
-  <div class="stay-card">
+  <a class="stay-card" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Villa+%E6%B0%B4%E9%8F%A1%E3%81%AE%E9%9B%AB+%E5%88%A5%E5%BA%9C">
     <svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18M3 18v2M21 18v2M7 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
     <div>
       <span class="stay-nights">別府 · 10/7–10/9 · 共 2 晚</span>
-      <div class="stay-name">Villa 水鏡の雫（UGO 3–5樓）</div>
+      <div class="stay-name">Villa 水鏡の雫（UGO 3–5樓） ↗</div>
       <div class="stay-addr">9 Chome-3 Ishigakinishi, Beppu, Oita 874-0910 日本</div>
     </div>
-  </div>
-  <div class="stay-card">
+  </a>
+  <a class="stay-card" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%B5%A4%E5%坂3-9-26">
     <svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18M3 18v2M21 18v2M7 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
     <div>
       <span class="stay-nights">福岡市區 · 10/9–10/12 · 共 3 晚</span>
-      <div class="stay-name">福岡市區民宿（赤坂）</div>
+      <div class="stay-name">福岡市區民宿（赤坂） ↗</div>
       <div class="stay-addr">〒810-0042 福岡市中央区赤坂 3-9-26 中村ビル 1F</div>
     </div>
-  </div>
+  </a>
 
 </div>
 </div>
@@ -423,122 +481,247 @@
   </div>
 
   <div class="day-pills">
-    <a href="#d1">D1</a><a href="#d2">D2</a><a href="#d3">D3</a>
-    <a href="#d4">D4</a><a href="#d5">D5</a><a href="#d6">D6</a>
+    <a href="#d1">D1 · 10/7</a><a href="#d2">D2 · 10/8</a><a href="#d3">D3 · 10/9</a>
+    <a href="#d4">D4 · 10/10</a><a href="#d5">D5 · 10/11</a><a href="#d6">D6 · 10/12</a>
   </div>
 
+  <!-- DAY 1 -->
   <article class="day-card" id="d1">
-    <div class="tag-head"><div class="grommet"></div>
+    <div class="tag-head">
+      <div class="grommet"></div>
       <div><span class="day-id">DAY 01 · 10/7</span><h3>啟程與溫泉鄉之夜</h3></div>
+      <svg class="tag-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="perforation"></div>
     <div class="tag-body">
       <ul class="timeline">
-        <li>抵達福岡機場（11:20）</li>
-        <li>博多車站搭乘由布院之森 5 號</li>
-        <li>由布院金鱗湖散策</li>
-        <li>前往別府，Check-in</li>
+        <li>抵達 <a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E7%A9%BA%E6%B8%AF+%E5%9C%8B%E9%9A%9B%E7%B7%9A"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>福岡機場</a>（11:20）</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%8D%9A%E5%A4%9A%E9%A7%85"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>博多車站</a> 搭乘由布院之森 5 號</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%B1%97%E6%B9%96"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>由布院金鱗湖</a> 散策</li>
+        <li>前往別府，辦理 Check-in</li>
       </ul>
-      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">博多車站特色鐵道便當</div><div class="meal-note">於博多站內選購，由布院之森列車上品嚐</div></div></div>
-      <div class="meal-row"><span class="meal-tag">點心</span><div><div class="meal-name">由布院特色點心</div><div class="meal-note">B-Speak 蛋糕卷、金賞可樂餅</div></div></div>
-      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">とんかつ山本ロイン</div><div class="meal-note">Tonkatsu Yamamoto Loin · 別府在地人氣炸豬排專門店</div></div></div>
-      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>Villa 水鏡の雫</b></div>
+      <div class="meal-row">
+        <span class="meal-tag">午餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%8D%9A%E5%A4%9A%E9%A7%85+%E4%BE%BF%E7%95%B6"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>博多車站特色鐵道便當</a></div>
+          <div class="meal-note">於博多站內選購，由布院之森列車上品嚐</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">點心</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=B-speak+%E7%94%B1%E5%B8%83%E9%99%A2"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>由布院特色點心</a></div>
+          <div class="meal-note">B-Speak 蛋糕卷、金賞可樂餅</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">晚餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%A8%E3%82%93%E3%81%8B%E3%81%A4%E5%B1%B1%E6%9C%AC%E3%83%AD%E3%82%A4%E3%83%B3+%E5%88%A5%E5%BA%9C"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>とんかつ山本ロイン</a></div>
+          <div class="meal-note">Tonkatsu Yamamoto Loin · 別府在地人氣炸豬排專門店</div>
+        </div>
+      </div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Villa+%E6%B0%B4%E9%8F%A1%E3%81%AE%E9%9B%AB+%E5%88%A5%E5%BA%9C"><b>Villa 水鏡の雫</b> ↗</a></div>
     </div>
   </article>
 
+  <!-- DAY 2 -->
   <article class="day-card" id="d2">
-    <div class="tag-head"><div class="grommet"></div>
+    <div class="tag-head">
+      <div class="grommet"></div>
       <div><span class="day-id">DAY 02 · 10/8</span><h3>由布院老街與別府地獄巡禮</h3></div>
+      <svg class="tag-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="perforation"></div>
     <div class="tag-body">
       <ul class="timeline">
         <li>別府出發</li>
-        <li>由布院老街散策（湯之坪街道）</li>
-        <li>別府空中纜車</li>
-        <li>別府海地獄（17:00 閉園）</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E3%81%AE%E5%9D%AA%E8%A1%97%E9%81%93"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>由布院老街散策（湯之坪街道）</a></li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C%E3%83%AD%E3%83%BC%E3%83%97%E3%82%A6%E3%82%A7%E3%82%A4"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>別府空中纜車</a></li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E5%9C%B0%E7%8D%84"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>別府海地獄</a>（17:00 閉園）</li>
         <li>返回別府市區</li>
       </ul>
-      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">由布まぶし 心</div><div class="meal-note">金鱗湖本店／站前店 · 招牌豐後牛、鰻魚、地雞三吃釜飯</div></div></div>
-      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">燒肉元相 本店</div><div class="meal-note">焼肉元相 本店 · 大分黑毛和牛燒肉名店 · 約 17:30–18:30 用餐</div></div></div>
-      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>Villa 水鏡の雫</b></div>
+      <div class="meal-row">
+        <span class="meal-tag">午餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%94%B1%E5%B8%83%E3%81%BE%E3%81%B6%E3%81%97+%E5%BF%83+%E7%94%B1%E5%B8%83%E9%99%A2"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>由布まぶし 心</a></div>
+          <div class="meal-note">金鱗湖本店／站前店 · 招牌豐後牛、鰻魚、地雞三吃釜飯</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">晚餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%E5%85%83%E7%9B%B8+%E6%9C%AC%E5%BA%97+%E5%88%A5%E5%BA%9C"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>燒肉元相 本店</a></div>
+          <div class="meal-note">焼肉元相 本店 · 大分黑毛和牛燒肉名店 · 約 17:30–18:30 用餐</div>
+        </div>
+      </div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Villa+%E6%B0%B4%E9%8F%A1%E3%81%AE%E9%9B%AB+%E5%88%A5%E5%BA%9C"><b>Villa 水鏡の雫</b> ↗</a></div>
     </div>
   </article>
 
+  <!-- DAY 3 -->
   <article class="day-card" id="d3">
-    <div class="tag-head"><div class="grommet"></div>
+    <div class="tag-head">
+      <div class="grommet"></div>
       <div><span class="day-id">DAY 03 · 10/9</span><h3>野生動物園、浮羽老街與柳川水鄉</h3></div>
+      <svg class="tag-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="perforation"></div>
     <div class="tag-body">
       <ul class="timeline">
         <li>別府出發</li>
-        <li>九州自然野生動物園（African Safari）</li>
-        <li>浮羽市「ぱんのもっか」麵包店</li>
-        <li>柳川人力遊船</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E4%B9%9D%E5%B7%9E%E8%87%AA%E7%84%B6%E5%8B%95%E7%89%A9%E5%85%AC%E5%9C%92%E3%82%A2%E3%83%8フ%E3%83%AA%E3%82%AB%E3%83%B3%E3%82%B5%E3%83%95%E3%82%A1%E3%83%AA"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>九州自然野生動物園</a>（African Safari）</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%B1%E3%82%93%E3%81%AE%E3%82%82%E3%81%A3%E3%81%8B+%E6%B5%AE%E7%BE%BD%E5%B8%82"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>浮羽市「ぱんのもっか」麵包店</a></li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E6%9F%B3%E5%B7%9D%E5%B7%9D%E4%B8%8B%E3%82%8A"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>柳川人力遊船</a></li>
         <li>前往福岡市區，Check-in</li>
       </ul>
-      <div class="meal-row"><span class="meal-tag">點心</span><div><div class="meal-name">ぱんのもっか（Pan no Mokka）</div><div class="meal-note">超人氣吉井町白壁老街手作麵包</div></div></div>
-      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">柳川蒸籠鰻魚飯</div><div class="meal-note">うなぎ料理 若松屋 或 元祖 本吉屋</div></div></div>
-      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">極味屋（極味や）</div><div class="meal-note">天神帕爾可店／博多站店 · 超人氣炭燒伊萬里牛鐵板漢堡排</div></div></div>
-      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>福岡市區赤坂民宿</b></div>
+      <div class="meal-row">
+        <span class="meal-tag">點心</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%B1%E3%82%93%E3%81%AE%E3%82%82%E3%81%A3%E3%81%8B+%E6%B5%AE%E7%BE%BD%E5%B8%82"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>ぱんのもっか（Pan no Mokka）</a></div>
+          <div class="meal-note">超人氣吉井町白壁老街手作麵包</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">午餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%86%E3%81%AA%E3%81%8E%E6%96%99%E7%90%86%E8%8B%A5%E6%9D%BE%E5%B1%8B+%E6%9F%B3%E5%B7%9D"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>柳川蒸籠鰻魚飯</a></div>
+          <div class="meal-note">うなぎ料理 若松屋 或 元祖 本吉屋</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">晚餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E6%A5%B5%E5%91%B3%E3%82%84+%E5%A4%A9%E7%A5%9E"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>極味屋（極味や）</a></div>
+          <div class="meal-note">天神帕爾可店／博多站店 · 超人氣炭燒伊萬里牛鐵板漢堡排</div>
+        </div>
+      </div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%B5%A4%E5%9D%823-9-26"><b>福岡市區赤坂民宿</b> ↗</a></div>
     </div>
   </article>
 
+  <!-- DAY 4 -->
   <article class="day-card" id="d4">
-    <div class="tag-head"><div class="grommet"></div>
+    <div class="tag-head">
+      <div class="grommet"></div>
       <div><span class="day-id">DAY 04 · 10/10</span><h3>神社參拜、抹茶甜點、特色咖啡與福岡拉麵</h3></div>
+      <svg class="tag-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="perforation"></div>
     <div class="tag-body">
       <ul class="timeline">
         <li>福岡民宿出發</li>
-        <li>太宰府天滿宮</li>
-        <li>南藏院（世界最大釋迦涅槃佛像）</li>
-        <li>市區散策（櫛田神社／運河城）</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%A4%AA%E5%AE%B0%E5%BA%9C%E5%A4%A9%E6%BA%80%E5%AE%AE"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>太宰府天滿宮</a></li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%8D%97%E8%94%B5%E9%99%A2"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>南藏院</a>（世界最大釋迦涅槃佛像）</li>
+        <li>市區散策（<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E6%AB%9B%E7%94%B0%E7%A5%9E%E7%A4%BE">櫛田神社</a>／<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%82%AD%E3%83%A3%E3%83%8A%E3%83%AB%E3%82%B7%E3%83%86%E3%82%A3%E5%8D%9A%E5%A4%9A">博多運河城</a>）</li>
         <li>返回民宿</li>
       </ul>
-      <div class="meal-row"><span class="meal-tag">表參道</span><div><div class="meal-name">茶和々 太宰府店（SAWAWA）</div><div class="meal-note">濃郁抹茶霜淇淋、抹茶蕨餅　＋　現烤梅枝餅（かさの家）</div></div></div>
-      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">海老香る醤油らぁ麺 寿（Kotobuki）</div><div class="meal-note">太宰府站正對面 · 招牌蝦油醬油拉麵 ＆ 炙烤叉燒飯</div></div></div>
-      <div class="meal-row"><span class="meal-tag">下午茶</span><div><div class="meal-name">FUK COFFEE（祇園店）</div><div class="meal-note">招牌焦糖布丁＋旅行航空風拿鐵</div></div></div>
-      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">麺や ISHII（Menya ISHII）</div><div class="meal-note">天神大名周邊人氣沾麵／拉麵</div></div></div>
-      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>福岡市區赤坂民宿</b></div>
+      <div class="meal-row">
+        <span class="meal-tag">表參道</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E8%8C%B6%E5%92%8C%E3%80%85+%E5%A4%AA%E5%AE%B0%E5%BA%9C%E5%BA%97"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>茶和々 太宰府店（SAWAWA）</a></div>
+          <div class="meal-note">濃郁抹茶霜淇淋、抹茶蕨餅 ＋ 現烤梅枝餅（<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%81%8B%E3%81%95%E3%81%AE%E5%AE%B6+%E5%A4%AA%E5%AE%B0%E5%BA%9C">かさの家</a>）</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">午餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E3%82%89%E3%81%81%E9%BA%BA+%E5%AF%BF+%E5%A4%AA%E5%AE%B0%E5%BA%9C"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>海老香る醤油らぁ麺 寿（Kotobuki）</a></div>
+          <div class="meal-note">太宰府站正對面 · 招牌蝦油醬油拉麵 ＆ 炙烤叉燒飯</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">下午茶</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=FUK+COFFEE+%E7%A5%87%E5%9C%92%E5%BA%97"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>FUK COFFEE（祇園店）</a></div>
+          <div class="meal-note">招牌焦糖布丁＋旅行航空風拿鐵</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">晚餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E9%BA%BA%E3%82%84ISHII+%E5%A4%A9%E7%A5%9E%E5%A4%A7%E5%90%8D"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>麺や ISHII（Menya ISHII）</a></div>
+          <div class="meal-note">天神大名周邊人氣沾麵／拉麵</div>
+        </div>
+      </div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%B5%A4%E5%9D%823-9-26"><b>福岡市區赤坂民宿</b> ↗</a></div>
     </div>
   </article>
 
+  <!-- DAY 5 -->
   <article class="day-card" id="d5">
-    <div class="tag-head"><div class="grommet"></div>
+    <div class="tag-head">
+      <div class="grommet"></div>
       <div><span class="day-id">DAY 05 · 10/11</span><h3>市區悠閒散策、公園咖啡、炭烤牛舌與壽司</h3></div>
+      <svg class="tag-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="perforation"></div>
     <div class="tag-body">
       <ul class="timeline">
-        <li>大濠公園散策</li>
-        <li>天神地下街</li>
-        <li>博多車站 AMU PLAZA 自由購物</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%BF%A0%E5%85%AC%E5%9C%92"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>大濠公園</a> 散策</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E7%A5%9E%E5%9C%B0%E4%B8%8B%E8%A1%97"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>天神地下街</a></li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=JR%E5%8D%9A%E5%A4%9A%E3%82%B7%E3%83%86%E3%82%A3+%E3%82%A2%E3%83%9F%E3%83%A5%E3%83%97%E3%83%A9%E3%82%B6%E5%8D%9A%E5%A4%9A"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>博多車站 AMU PLAZA</a> 自由購物</li>
       </ul>
-      <div class="meal-row"><span class="meal-tag">早咖啡</span><div><div class="meal-name">FUK COFFEE Parks（大濠公園店）</div><div class="meal-note">公園畔悠閒晨光咖啡</div></div></div>
-      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">牛たん炭焼 利久（博多店）</div><div class="meal-note">JR博多城 9F／KITTE博多 B1 · 招牌厚切炭烤牛舌定食</div></div></div>
-      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">廻転寿司 冨士丸（赤坂店）</div><div class="meal-note">赤坂民宿周邊人氣新鮮握壽司與生魚片</div></div></div>
-      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<b>福岡市區赤坂民宿</b></div>
+      <div class="meal-row">
+        <span class="meal-tag">早咖啡</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=FUK+COFFEE+Parks+%E5%A4%A7%E6%BF%A0%E5%85%AC%E5%9C%92"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>FUK COFFEE Parks（大濠公園店）</a></div>
+          <div class="meal-note">公園畔悠閒晨光咖啡</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">午餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E3%81%9F%E3%82%93%E7%82%AD%E7%84%BC+%E5%88%A9%E4%B9%85+%E5%8D%9A%E5%A4%9A%E9%A7%85%E5%89%8D%E5%BA%97"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>牛たん炭焼 利久（博多店）</a></div>
+          <div class="meal-note">JR博多城 9F／KITTE博多 B1 · 招牌厚切炭烤牛舌定食</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">晚餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%9B%9E%E8%BB%A2%E5%AF%BF%E5%8F%B8%E5%86%A8%E5%A3%AB%E4%B8%B8+%E8%B5%A4%E5%9D%82%E5%BA%97"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>廻転寿司 冨士丸（赤坂店）</a></div>
+          <div class="meal-note">赤坂民宿周邊人氣新鮮握壽司與生魚片</div>
+        </div>
+      </div>
+      <div class="stay-foot"><svg viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 012-2h4a2 2 0 012 2v1h6a2 2 0 012 2v4M3 18h18"/></svg>住宿：<a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%B5%A4%E5%9D%823-9-26"><b>福岡市區赤坂民宿</b> ↗</a></div>
     </div>
   </article>
 
+  <!-- DAY 6 -->
   <article class="day-card" id="d6">
-    <div class="tag-head"><div class="grommet"></div>
+    <div class="tag-head">
+      <div class="grommet"></div>
       <div><span class="day-id">DAY 06 · 10/12</span><h3>市區最後採買與返程</h3></div>
+      <svg class="tag-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="perforation"></div>
     <div class="tag-body">
       <ul class="timeline">
-        <li>赤坂／天神周邊最後採買</li>
-        <li>約 16:50 前抵達福岡機場 TI 辦理登機</li>
+        <li><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E7%A5%9E%E9%A7%85"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>赤坂／天神</a> 周邊最後採買</li>
+        <li>約 16:50 前抵達 <a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E7%A9%BA%E6%B8%AF+%E5%9C%8B%E9%9A%9B%E7%B7%9A"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>福岡機場 TI</a> 辦理登機</li>
         <li>搭乘 BR101（19:20 起飛）返回台北桃園（20:45 抵達）</li>
       </ul>
-      <div class="meal-row"><span class="meal-tag">午餐</span><div><div class="meal-name">元祖博多めんたい重</div><div class="meal-note">福岡元祖明太子專賣飯</div></div></div>
-      <div class="meal-row"><span class="meal-tag">晚餐</span><div><div class="meal-name">機場輕食／飛機餐</div><div class="meal-note">福岡機場國際線出境大廳輕食</div></div></div>
+      <div class="meal-row">
+        <span class="meal-tag">午餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E5%85%83%E7%A5%96%E5%8D%9A%E5%A4%9A%E3%82%81%E3%82%93%E3%81%9F%E3%81%84%E9%87%8D+%E7%A6%8F%E5%B2%A1"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>元祖博多めんたい重</a></div>
+          <div class="meal-note">福岡元祖明太子專賣飯</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <span class="meal-tag">晚餐</span>
+        <div>
+          <div class="meal-name"><a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E7%A9%BA%E6%B8%AF+%E5%9B%BD%E9%9A%9B%E7%B7%9A+%E3%83%AC%E3%82%B9%E3%83%88%E3%83%A9%E3%83%B3"><svg class="inline-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg>機場輕食／飛機餐</a></div>
+          <div class="meal-note">福岡機場國際線出境大廳輕食</div>
+        </div>
+      </div>
     </div>
   </article>
+
+  <div class="footer">
+    <div class="rule"></div>
+    福岡．別府 6 日 5 夜 · 行程僅供旅行參考，實際時間請以現場為準
+  </div>
 </div>
 </div>
 
@@ -568,7 +751,7 @@
 
   <div class="footer">
     <div class="rule"></div>
-    福岡．別府 6 日 5 夜　·　行程僅供旅行參考，實際時間請以現場為準
+    福岡．別府 6 日 5 夜 · 行程僅供旅行參考，實際時間請以現場為準
   </div>
 </div>
 </div>
@@ -659,17 +842,31 @@
   }
   tabButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.target)));
 
-  // ---------- Day-pill quick jump inside itinerary page ----------
+  // ---------- Collapsible Day Cards ----------
+  document.querySelectorAll('.day-card .tag-head').forEach(head => {
+    head.addEventListener('click', () => {
+      const card = head.closest('.day-card');
+      card.classList.toggle('open');
+    });
+  });
+
+  // ---------- Day-pill quick jump & auto-expand inside itinerary page ----------
   const itineraryPage = document.getElementById('page-itinerary');
   document.querySelectorAll('.day-pills a').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      const target = document.getElementById(a.getAttribute('href').slice(1));
+      const targetId = a.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
       if (target && itineraryPage){
-        itineraryPage.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
+        target.classList.add('open');
+        setTimeout(() => {
+          itineraryPage.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
+        }, 50);
       }
     });
   });
 </script>
 </body>
 </html>
+
+```
